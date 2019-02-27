@@ -1,3 +1,8 @@
+"开启真彩色支持
+set termguicolors
+"开启256色支持
+set t_Co=256
+
 let mapleader = ","
 " 快捷退出插入模式
 inoremap jk <Esc>`^
@@ -199,7 +204,7 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 
 " 快捷打开NERDTree
 command! -nargs=* -complete=file NT NERDTree <args>
-map <C-t> :NERDTreeToggle<CR>
+map <leader>t :NERDTreeToggle<CR>
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
