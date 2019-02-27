@@ -108,7 +108,14 @@ Plug 'Yggdroot/indentLine'  "缩进可视化
 " :IndentLinesToggle 可以开启或关闭缩进标记
 
 Plug 'vimcn/vimcdoc'  "vim手册中文文档
-" Plug 'flazz/vim-colorschemes'
+Plug 'flazz/vim-colorschemes'
+
+" 快速加入修改环绕字符
+" for repeat -> enhance surround.vim, . to repeat command
+Plug 'tpope/vim-repeat' | Plug 'tpope/vim-surround'
+
+" 自动补全单引号，双引号等
+Plug 'Raimondi/delimitMate'
 
 " 文本对象插件
 Plug 'kana/vim-textobj-user'
@@ -116,6 +123,37 @@ Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-syntax'
 Plug 'kana/vim-textobj-function', { 'for':['c', 'cpp', 'vim', 'java'] }
 Plug 'sgur/vim-textobj-parameter'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" rainbow_parentheses
+" 括号显示增强
+Plug 'kien/rainbow_parentheses.vim'
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:rbpt_colorpairs = [
+	\ ['brown',       'RoyalBlue3'],
+	\ ['Darkblue',    'SeaGreen3'],
+	\ ['darkgray',    'DarkOrchid3'],
+	\ ['darkgreen',   'firebrick3'],
+	\ ['darkcyan',    'RoyalBlue3'],
+	\ ['darkred',     'SeaGreen3'],
+	\ ['darkmagenta', 'DarkOrchid3'],
+	\ ['brown',       'firebrick3'],
+	\ ['gray',        'RoyalBlue3'],
+	\ ['darkmagenta', 'DarkOrchid3'],
+	\ ['Darkblue',    'firebrick3'],
+	\ ['darkgreen',   'RoyalBlue3'],
+	\ ['darkcyan',    'SeaGreen3'],
+	\ ['darkred',     'DarkOrchid3'],
+	\ ['red',         'firebrick3'],
+	\ ]
+
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'python-mode/python-mode', { 'for': 'python' }
