@@ -320,6 +320,21 @@ let g:UltiSnipsListSnippets="<C-l>"
 let g:UltiSnipsJumpForwardTrigger="<C-j>"
 let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 
+" move quickly
+" easy motion config
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Plug 'easymotion/vim-easymotion'
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 修改easymotion动作前缀
+map <leader>m <Plug>(easymotion-prefix)
+let g:EasyMotion_smartcase = 1
+" 避免重复使用hjkl
+map <Leader>ml <Plug>(easymotion-lineforward)
+map <Leader>mj <Plug>(easymotion-j)
+map <Leader>mk <Plug>(easymotion-k)
+map <Leader>mh <Plug>(easymotion-linebackward)
+let g:EasyMotion_startofline = 0
+
 call plug#end()
 
 
