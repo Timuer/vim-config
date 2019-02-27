@@ -10,18 +10,6 @@ set nocompatible
 
 set encoding=utf-8
 
-" 配色方案
-""""""""""""""""""""""""""""""""""""""
-set background=dark
-" colorscheme solarized
-" colorscheme candy
-colorscheme Monokai
-" colorscheme SweetCandy
-" colorscheme jellybeans
-" colorscheme vibrantink
-" colorscheme molokai
-
-
 " 总是显示状态栏
 set laststatus=2
 " 显示光标当前位置
@@ -109,6 +97,17 @@ Plug 'Yggdroot/indentLine'  "缩进可视化
 
 Plug 'vimcn/vimcdoc'  "vim手册中文文档
 Plug 'flazz/vim-colorschemes'
+
+" 配色方案
+""""""""""""""""""""""""""""""""""""""
+set background=dark
+" colorscheme solarized
+" colorscheme candy
+colorscheme Monokai
+" colorscheme SweetCandy
+" colorscheme jellybeans
+" colorscheme vibrantink
+" colorscheme molokai
 
 " 快速加入修改环绕字符
 " for repeat -> enhance surround.vim, . to repeat command
@@ -237,7 +236,7 @@ Plug 'Valloric/YouCompleteMe'
 "'''''''''''''''''''''''''''''''''''''''''''''"""""""""""""""""""""""""""""'
 
 " 全局conf文件地址
-let g:ycm_global_ycm_extra_conf='~/.vim/config/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
 " 取消载入conf文件时出现确认提示
 let g:ycm_confirm_extra_conf = 0
 " 取消花边功能
@@ -311,10 +310,10 @@ Plug 'honza/vim-snippets'
 " Ultisnips 配置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:UltiSnipsExpandTrigger="<Tab>"
+let g:UltiSnipsExpandTrigger="<leader><Tab>"
 let g:UltiSnipsListSnippets="<C-l>"
-let g:UltiSnipsJumpForwardTrigger="<c-n>"
-let g:UltiSnipsJumpBackwardTrigger="<c-p>"
+let g:UltiSnipsJumpForwardTrigger="<C-j>"
+let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 
 call plug#end()
 
