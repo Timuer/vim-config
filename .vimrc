@@ -160,7 +160,11 @@ colorscheme Monokai
 Plug 'tpope/vim-repeat' | Plug 'tpope/vim-surround'
 
 " 自动补全单引号，双引号等
-Plug 'Raimondi/delimitMate'
+Plug 'jiangmiao/auto-pairs'
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:AutoPairsFlyMode = 1
+let g:AutoPairsShortcutBackInsert = '<C-b>'
+
 
 " 文本对象插件
 Plug 'kana/vim-textobj-user'
