@@ -1,3 +1,5 @@
+" 转换为unix格式
+set fileformat=unix
 "开启真彩色支持
 set termguicolors
 "开启256色支持
@@ -89,6 +91,45 @@ nnoremap <C-k> <C-w>k
 " 窗口失去聚焦时自动保存文件
 autocmd FocusLost * :wa
 
+" 全屏当前窗口
+function! s:ZoomToggle() abort
+    if exists('t:zoomed') && t:zoomed
+        execute t:zoom_winrestcmd
+        let t:zoomed = 0
+    else
+        let t:zoom_winrestcmd = winrestcmd()
+        resize
+        vertical resize
+        let t:zoomed = 1
+    endif
+endfunction
+command! ZoomToggle call s:ZoomToggle()
+nnoremap <silent> <Leader>z :ZoomToggle<CR>
+
+
+" Go to home and end using capitalized directions
+noremap H ^
+noremap L $
+
+" 切换前后buffer
+nnoremap [b :bprevious<cr>
+nnoremap ]b :bnext<cr>
+
+" tab切换
+map <leader>th :tabfirst<cr>
+map <leader>tl :tablast<cr>
+
+map <leader>tj :tabnext<cr>
+map <leader>tk :tabprev<cr>
+map <leader>tn :tabnext<cr>
+map <leader>tp :tabprev<cr>
+
+map <leader>te :tabedit<cr>
+map <leader>td :tabclose<cr>
+map <leader>tm :tabm<cr>
+nnoremap <leader>tt :tabnew<CR>
+inoremap <leader>tt <Esc>:tabnew<CR>
+
 " 安装插件
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.vim/bundle')
@@ -164,14 +205,14 @@ Plug 'python-mode/python-mode', { 'for': 'python' }
 " python-mode配置
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"开启警告
-let g:pymode_warnings = 0
+" 是否关闭警告
+let g:pymode_warnings = 1
 "保存文件时自动删除无用空格
 let g:pymode_trim_whitespaces = 1
 let g:pymode_options = 1
 "设置QuickFix窗口的最大，最小高度
 let g:pymode_quickfix_minheight = 3
-let g:pymode_quickfix_maxheight = 1
+let g:pymode_quickfix_maxheight = 7
 "使用python3
 let g:pymode_python = 'python3'
 "开启python-mode定义的移动方式
@@ -183,7 +224,25 @@ let g:pymode_breakpoint_bind = '<leader>b'
 "开启python所有的语法高亮
 let g:pymode_syntax = 1
 let g:pymode_syntax_all = 1
+"启用python-mode内置的python文档，使用K进行查找
+let g:pymode_doc = 1
+let g:pymode_doc_bind = 'K'
+"自动检测并启用virtualenv
+let g:pymode_virtualenv = 1
+"是否启用python语法检查
+let g:pymode_lint = 0
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" javascript 开发配置
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" 注意: syntax这个插件要放前面
+Plug 'othree/yajs.vim' | Plug 'pangloss/vim-javascript'
+" for javascript 自动补全, 配合YCM, 需要安装全局环境的（非nvm中) node.js&npm
+" 安装完成后还需要在 bundle/tern_for_vim 下执行 npm install 安装依赖 `cd ~/.vim/bundle/tern_for_vim && npm install`
+" see https://github.com/marijnh/tern_for_vim
+Plug 'marijnh/tern_for_vim', {'do': 'npm install'}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'scrooloose/nerdtree' "浏览目录树插件
@@ -204,7 +263,7 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 
 " 快捷打开NERDTree
 command! -nargs=* -complete=file NT NERDTree <args>
-map <leader>t :NERDTreeToggle<CR>
+map <leader>nt :NERDTreeToggle<CR>
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -239,7 +298,9 @@ endif
 Plug 'Valloric/YouCompleteMe'
 " YouCompleteMe配置
 "'''''''''''''''''''''''''''''''''''''''''''''"""""""""""""""""""""""""""""'
-
+" cd ~/.vim/bundle/YouCompleteMe
+" ./install.py --clang-completer --ts-completer
+"
 " 全局conf文件地址
 let g:ycm_global_ycm_extra_conf='~/.ycm_extra_conf.py'
 " 取消载入conf文件时出现确认提示
@@ -261,6 +322,8 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_comments = 1
 " 在字符串输入中也能补全
 let g:ycm_complete_in_strings=1
+" 提示UltiSnips
+let g:ycm_use_ultisnips_completer = 1
 " 主动补全
 let g:ycm_key_invoke_completion = '<c-z>'
 set completeopt=menu,menuone
@@ -277,6 +340,8 @@ let g:ycm_filetype_whitelist = {
         \ "python":1, 
         \ "sh":1,
         \ "zsh":1,
+        \ "javascript":1,
+        \ "html":1,
     \ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -335,7 +400,67 @@ map <Leader>mk <Plug>(easymotion-k)
 map <Leader>mh <Plug>(easymotion-linebackward)
 let g:EasyMotion_startofline = 0
 
+" 语法动态检查
+"""""""""""""""""""""""""""""""""""""""""""
+Plug 'w0rp/ale'
+"""""""""""""""""""""""""""""""""""""""""""
+" pip install flake8
+" curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+" nvm install node
+" npm install npm@latest -g
+" npm install -g eslint eslint-plugin-standard eslint-plugin-promise eslint-config-standard
+" npm install -g eslint-plugin-import eslint-plugin-node eslint-plugin-html babel-eslint
+let g:ale_linters = {
+\   'python': ['flake8'],
+\   'javascript': ['eslint'],
+\}
+
+let g:ale_completion_delay = 500
+let g:ale_echo_delay = 20
+let g:ale_lint_delay = 500
+" normal模式下文字改变或insert模式离开时进行检查
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:airline#extensions#ale#enabled = 1
+
+" E501 -> 120 chars
+let g:ale_python_flake8_args="--ignore=E114,E116,E131 --max-line-length=120"
+" --ignore=E225,E124,E712,E116
+let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+let g:ale_c_cppcheck_options = ''
+let g:ale_cpp_cppcheck_options = ''
+
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '>'
+
+let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+nmap <silent> <Leader>ep <Plug>(ale_previous_wrap)
+nmap <silent> <Leader>en <Plug>(ale_next_wrap)
+
+nnoremap <silent> <Leader>et :ALEToggle<CR>
+
+" troggle quickfix list
+function! ToggleErrors()
+    let old_last_winnr = winnr('$')
+    lclose
+    if old_last_winnr == winnr('$')
+        " Nothing was closed, open syntastic_error location panel
+        lopen
+    endif
+endfunction
+nnoremap <Leader>es :call ToggleErrors()<cr>
+
+let g:ale_set_highlights = 1
+highlight clear ALEErrorSign
+highlight clear ALEWarningSign
+
 call plug#end()
+
 
 
 
